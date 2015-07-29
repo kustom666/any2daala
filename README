@@ -1,0 +1,5 @@
+Any2Daala
+=====================
+
+*Any2Daala* is a transcoder. It can decode any common video file and re-encode it using the new, highly experimental
+daala codec. The output is a higly compressed yet high quality daala video encapsulated in an ogg bitstream.
