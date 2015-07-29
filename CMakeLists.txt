@@ -1,0 +1,11 @@
+cmake_minimum_required (VERSION 2.8.11)
+project (any2daala)
+set(CMAKE_C_FLAGS "-g -Wall")
+add_executable (bin/any2daala src/main.c)
+
+target_link_libraries (bin/any2daala LINK_PUBLIC daalabase)
+target_link_libraries (bin/any2daala LINK_PUBLIC daalaenc)
+target_link_libraries (bin/any2daala LINK_PUBLIC ogg)
+target_link_libraries (bin/any2daala LINK_PUBLIC avformat)
+target_link_libraries (bin/any2daala LINK_PUBLIC avcodec)
+target_link_libraries (bin/any2daala LINK_PUBLIC avutil)

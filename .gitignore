@@ -1,0 +1,10 @@
+*.y4m
+*.flv
+*.mp4
+*.ogv
+Makefile
+makefile
+CMakeCache.txt
+CMakeFiles
+CMakeFiles/*
+bin/*
