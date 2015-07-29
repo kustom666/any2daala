@@ -37,8 +37,8 @@ int main(int argc, char** argv)
 	AVStream* video_stream = NULL;
 	AVFrame* frame;
 	AVCodecContext* video_dec_ctx;
-    AVCodec *dec = NULL;
-    AVDictionary *opts = NULL;
+	AVCodec *dec = NULL;
+	AVDictionary *opts = NULL;
 
 	ogg_stream_state os;
 	ogg_page og;
@@ -50,38 +50,38 @@ int main(int argc, char** argv)
 	av_log_set_level(AV_LOG_QUIET);
 
 	int ret = avformat_open_input(&fmt_ctx, argv[1], NULL, NULL);
-    if (ret < 0) {
-        fprintf(stderr, "Could not open source file %s\n", argv[1]);
-        exit(1);
-    }
+	if (ret < 0) {
+		fprintf(stderr, "Could not open source file %s\n", argv[1]);
+		exit(1);
+	}
 
-    if (avformat_find_stream_info(fmt_ctx, NULL) < 0) {
-        fprintf(stderr, "Could not find stream information\n");
-        exit(1);
-    }
+	if (avformat_find_stream_info(fmt_ctx, NULL) < 0) {
+		fprintf(stderr, "Could not find stream information\n");
+		exit(1);
+	}
 
-    av_dump_format(fmt_ctx, 0, argv[1], 0);
+	av_dump_format(fmt_ctx, 0, argv[1], 0);
 
-    retval = av_find_best_stream(fmt_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
-    if (ret < 0) {
-        fprintf(stderr, "Could not find a video stream in input file '%s'\n", argv[1]);
-        exit(1);
-    }
+	retval = av_find_best_stream(fmt_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
+	if (ret < 0) {
+		fprintf(stderr, "Could not find a video stream in input file '%s'\n", argv[1]);
+		exit(1);
+	}
 
-    video_stream = fmt_ctx->streams[retval];
-    nb_frames = video_stream->nb_frames;
-    video_dec_ctx = video_stream->codec;
+	video_stream = fmt_ctx->streams[retval];
+	nb_frames = video_stream->nb_frames;
+	video_dec_ctx = video_stream->codec;
 
-    dec = avcodec_find_decoder(video_dec_ctx->codec_id);
-    if (!dec) {
-        fprintf(stderr, "Failed to find a video codec\n");
-        exit(1);
-    }
+	dec = avcodec_find_decoder(video_dec_ctx->codec_id);
+	if (!dec) {
+		fprintf(stderr, "Failed to find a video codec\n");
+		exit(1);
+	}
 
-    if ((ret = avcodec_open2(video_dec_ctx, dec, &opts)) < 0) {
-        fprintf(stderr, "Failed to open a video codec\n");
-        exit(1);
-    }
+	if ((ret = avcodec_open2(video_dec_ctx, dec, &opts)) < 0) {
+		fprintf(stderr, "Failed to open a video codec\n");
+		exit(1);
+	}
 
 	frame = av_frame_alloc();
 
