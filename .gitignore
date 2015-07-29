@@ -8,3 +8,5 @@ CMakeCache.txt
 CMakeFiles
 CMakeFiles/*
 bin/*
+cmake_install.cmake
+*.cmake

@@ -18,8 +18,8 @@
 
 int main(int argc, char** argv)
 {
-	int quant = 30;
-	int retval, got_frame, nb_frames, curr_frame;
+	int retval, got_frame, nb_frames, i=1, quant = 30, xdeccb = 0, ydeccb = 0, xdeccr = 0, ydeccr = 0;
+	float fps =0;
 	long video_sn = 1;
 
 	clock_t t;
@@ -37,6 +37,12 @@ int main(int argc, char** argv)
 	AVStream* video_stream = NULL;
 	AVFrame* frame;
 	AVCodecContext* video_dec_ctx;
+    AVCodec *dec = NULL;
+    AVDictionary *opts = NULL;
+
+	ogg_stream_state os;
+	ogg_page og;
+
 
 	db_out = fopen(argv[2], "wb");
 	
@@ -56,9 +62,6 @@ int main(int argc, char** argv)
 
     av_dump_format(fmt_ctx, 0, argv[1], 0);
 
-    AVCodec *dec = NULL;
-    AVDictionary *opts = NULL;
-
     retval = av_find_best_stream(fmt_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
     if (ret < 0) {
         fprintf(stderr, "Could not find a video stream in input file '%s'\n", argv[1]);
@@ -67,8 +70,8 @@ int main(int argc, char** argv)
 
     video_stream = fmt_ctx->streams[retval];
     nb_frames = video_stream->nb_frames;
-    /* find decoder for the stream */
     video_dec_ctx = video_stream->codec;
+
     dec = avcodec_find_decoder(video_dec_ctx->codec_id);
     if (!dec) {
         fprintf(stderr, "Failed to find a video codec\n");
@@ -99,8 +102,6 @@ int main(int argc, char** argv)
 	info_codec.timebase_denominator = video_dec_ctx->time_base.num;
 
 	info_codec.frame_duration = 1;
-
-	int xdeccb = 0, ydeccb = 0, xdeccr = 0, ydeccr = 0;
 
 	if(video_dec_ctx->pix_fmt == AV_PIX_FMT_YUV420P)
 	{
@@ -143,9 +144,6 @@ int main(int argc, char** argv)
 	context = daala_encode_create(&info_codec);
 	daala_encode_ctl(context, OD_SET_QUANT, &quant, sizeof(quant));
 
-	ogg_stream_state os;
-	ogg_page og;
-
 	if((retval = ogg_stream_init(&os, video_sn)) != 0)
 	{
 		fprintf(stderr, "Error when initializing the output ogg stream\n");
@@ -161,8 +159,6 @@ int main(int argc, char** argv)
 		}
 	}
 
-	int i=1;
-	float fps =0;
 	while(av_read_frame(fmt_ctx, &pkt) == 0)
 	{ //TODO : check return for errors
 		if(avcodec_decode_video2(video_dec_ctx, frame, &got_frame, &pkt) < 0)
