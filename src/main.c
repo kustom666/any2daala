@@ -1,20 +1,18 @@
 #include <daala/codec.h>
-#include <daala/daalaenc.h>
 #include <daala/daala_integer.h>
-
+#include <daala/daalaenc.h>
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/avutil.h>
+#include <libavutil/imgutils.h>
+#include <libavutil/pixdesc.h>
+#include <libavutil/samplefmt.h>
+#include <libavutil/time.h>
+#include <ogg/ogg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <ogg/ogg.h>
-
-#include <libavutil/imgutils.h>
-#include <libavutil/samplefmt.h>
-#include <libavutil/time.h>
-#include <libavutil/avutil.h>
-#include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
-#include <libavutil/pixdesc.h>
 
 int main(int argc, char** argv)
 {
